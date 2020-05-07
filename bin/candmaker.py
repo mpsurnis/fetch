@@ -13,6 +13,18 @@ from h5plotter import plot_h5
 
 logger = logging.getLogger()
 
+def norm_bp(data):
+    """
+    Normalise data using bandpass as in mtcutils
+    :param data: data
+    """
+    data = np.array(data, dtype=np.float32)
+    bpmean = data.mean(axis=1, dtype=float).astype(np.float32)
+    bpstd = data.std(axis=1, dtype=float).astype(np.float32)
+    bpstd[bpstd == 0] = 1.0
+    data = (data - bpmean.reshape(-1, 1)) / bpstd.reshape(-1, 1)
+    return data
+
 
 def normalise(data):
     """
